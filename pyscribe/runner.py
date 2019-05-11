@@ -47,6 +47,6 @@ class Runner:
       hof.sort(key=lambda ind: ind.fitness.values)
       hof = hof[:int(self.popSize/2)]
       self.pop[:] = offspring
-      print(self.toolbox.evaluate(hof[0]))
+      # print(self.toolbox.evaluate(hof[0]))
 
     return self.pop, hof
