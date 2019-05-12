@@ -2,10 +2,6 @@ from constants import DEFAULT_PENALTY
 from cost import hcosts, vcosts
 from itertools import combinations, product
 
-def isBlackKey(pitch):
-  blackKeys = { 1, 3, 6, 8, 10 }
-  return (pitch.midi % 12) in blackKeys
-
 def hcost(fingerPair, distance):
   fingerPairLst = [str(i) for i in fingerPair]
   fingerPairStr = ''.join(fingerPairLst)
@@ -35,9 +31,6 @@ def verticalCost(individual, chords):
   totalcost = 0
   for i in range(len(individual)):
     assignedFingerings = [(finger, note) for finger, note in zip(individual[i], chords[i].pitches)]
-
-    if assignedFingerings[0][0] == 0 and isBlackKey(assignedFingerings[0][1]):
-      totalCost += 5
 
     allPairs = list(combinations(assignedFingerings, 2))
     for pair in allPairs:
