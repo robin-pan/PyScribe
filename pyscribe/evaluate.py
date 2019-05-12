@@ -1,3 +1,4 @@
+from constants import DEFAULT_PENALTY
 from cost import hcosts, vcosts
 from itertools import combinations, product
 
@@ -5,18 +6,11 @@ def isBlackKey(pitch):
   blackKeys = { 1, 3, 6, 8, 10 }
   return (pitch.midi % 12) in blackKeys
 
-def isCrossover(fingerPair, distance):
-  if fingerPair[0] == 0 and distance < 0:
-    return True
-  if fingerPair[1] == 0 and distance > 0:
-    return True
-  return False
-
 def hcost(fingerPair, distance):
   fingerPairLst = [str(i) for i in fingerPair]
   fingerPairStr = ''.join(fingerPairLst)
   distanceChart =  hcosts[fingerPairStr]
-  return distanceChart[distance] if distance in distanceChart else 5
+  return distanceChart[distance] if distance in distanceChart else DEFAULT_PENALTY
 
 def horizontalCost(individual, chords):
   totalcost = 0
@@ -29,16 +23,13 @@ def horizontalCost(individual, chords):
       fingerPair = (pair[0][0], pair[1][0])
       distance = pair[1][1].midi - pair[0][1].midi
       totalcost += hcost(fingerPair, distance) / len(allPairs)
-
-      if isCrossover(fingerPair, distance):
-        totalcost += 2
     
   return totalcost
 
 def vcost(fingerPair, distance):
   fingerPairStr = ''.join(str(i) for i in fingerPair)
   distanceChart = vcosts[fingerPairStr]
-  return distanceChart[distance] if distance in distanceChart else 5
+  return distanceChart[distance] if distance in distanceChart else DEFAULT_PENALTY
 
 def verticalCost(individual, chords):
   totalcost = 0
@@ -46,7 +37,7 @@ def verticalCost(individual, chords):
     assignedFingerings = [(finger, note) for finger, note in zip(individual[i], chords[i].pitches)]
 
     if assignedFingerings[0][0] == 0 and isBlackKey(assignedFingerings[0][1]):
-      totalCost += 2
+      totalCost += 5
 
     allPairs = list(combinations(assignedFingerings, 2))
     for pair in allPairs:
@@ -59,4 +50,4 @@ def verticalCost(individual, chords):
 def evaluate(individual, chords):
   v = verticalCost(individual, chords)
   h = horizontalCost(individual, chords)
-  return v + h * 2
+  return v + h

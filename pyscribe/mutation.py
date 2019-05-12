@@ -21,3 +21,9 @@ def mutate(individual, chordSizes):
   individual[i] = newAllele
   
   return individual
+
+# def generateFingerings(chordSizes):
+#   return [(0,), (1,), (2,), (0,), (1,), (2,), (3,), (4,), (3,), (2,), (1,), (0,), (2,), (1,), (0,)]
+
+# def mutate(individual, chordSizes):
+#   return individual 
