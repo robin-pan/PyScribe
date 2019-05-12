@@ -1,3 +1,4 @@
+from argparser import ArgParser
 from constants import crossoverPb, FINGER_COUNT, mutationPb
 from deap import creator, base, tools, algorithms
 from evaluate import evaluate
@@ -6,8 +7,11 @@ from mutation import generateFingerings, mutate
 from runner import Runner
 
 ##
-p = MusicParser('./My_First_Score.musicxml')
-chords, chord_sizes = p.parse()
+args = ArgParser().parse()
+
+##
+musicParser = MusicParser(args.filename)
+chords, chord_sizes = musicParser.parse()
 song_length = len(chord_sizes)
 
 ##
@@ -42,6 +46,5 @@ pop, hof = runner.Run()
 ##
 runner = Runner(toolbox, int(song_length * 5), song_length * 5, crossoverPb, mutationPb, hof)
 pop, hof = runner.Run()
-
 
 print(hof[0])
