@@ -6,7 +6,7 @@ from mutation import generateFingerings, mutate
 from runner import Runner
 
 ##
-p = MusicParser('./My_First_Score.musicxml')
+p = MusicParser('./My_Second_Score.musicxml')
 chords, chord_sizes = p.parse()
 song_length = len(chord_sizes)
 
@@ -28,11 +28,11 @@ toolbox.register("evaluate", evaluate, chords=chords)
 toolbox.register("mutate", mutate, chordSizes=chord_sizes)
 
 ##
-runner = Runner(toolbox, song_length * 8, song_length * 8, crossoverPb, mutationPb)
+runner = Runner(toolbox, song_length * 10, song_length * 10, crossoverPb, mutationPb)
 pop, hof = runner.Run()
 
 ##
-runner = Runner(toolbox, int(song_length * 4), song_length * 8, crossoverPb, mutationPb, hof)
+runner = Runner(toolbox, int(song_length * 10), song_length * 10, crossoverPb, mutationPb, hof)
 pop, hof = runner.Run()
 
 print(hof[0])

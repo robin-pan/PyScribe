@@ -45,8 +45,9 @@ class Runner:
         
       hof.extend(offspring)
       hof.sort(key=lambda ind: ind.fitness.values)
-      hof = hof[:int(self.popSize/2)]
+      hof = hof[:self.popSize]
+
       self.pop[:] = offspring
-      # print(self.toolbox.evaluate(hof[0]))
+      print('best score', self.toolbox.evaluate(hof[0]))
 
     return self.pop, hof
