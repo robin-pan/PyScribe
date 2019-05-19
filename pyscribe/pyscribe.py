@@ -1,6 +1,6 @@
 from argparser import ArgParser
 from constants import crossoverPb, FINGER_COUNT, mutationPb
-from deap import creator, base, tools, algorithms
+from deap import algorithms, base, creator, tools 
 from evaluate import evaluate
 from musicparser import MusicParser
 from mutation import generateFingerings, mutate
@@ -32,19 +32,16 @@ toolbox.register("evaluate", evaluate, chords=chords)
 toolbox.register("mutate", mutate, chordSizes=chord_sizes)
 
 ##
-runner = Runner(toolbox, song_length * 10, song_length * 10, crossoverPb, mutationPb)
+runner = Runner(toolbox, song_length * 10, song_length * 10, crossoverPb, mutationPb, tools.HallOfFame(song_length * 10))
 pop, hof = runner.Run()
 
-##
-runner = Runner(toolbox, int(song_length * 10), song_length * 10, crossoverPb, mutationPb, hof)
+runner = Runner(toolbox, song_length * 10, song_length * 10, crossoverPb, mutationPb, tools.HallOfFame(song_length * 5), list(hof))
 pop, hof = runner.Run()
 
-##
-runner = Runner(toolbox, int(song_length * 5), song_length * 5, crossoverPb, mutationPb, hof)
+runner = Runner(toolbox, song_length * 5, song_length * 5, crossoverPb, mutationPb, tools.HallOfFame(song_length * 5), list(hof))
 pop, hof = runner.Run()
 
-##
-runner = Runner(toolbox, int(song_length * 5), song_length * 5, crossoverPb, mutationPb, hof)
+runner = Runner(toolbox, song_length * 5, song_length * 5, crossoverPb, mutationPb, tools.HallOfFame(song_length * 5), list(hof))
 pop, hof = runner.Run()
 
 print(hof[0])

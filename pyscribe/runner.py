@@ -2,18 +2,18 @@ import numpy as np
 from random import random, shuffle
 
 class Runner:
-  def __init__(self, toolbox, popSize, ngen, crossoverPb, mutationPb, pop=None):
+  def __init__(self, toolbox, popSize, ngen, crossoverPb, mutationPb, hof, pop=None):
     self.toolbox = toolbox
     self.popSize = popSize
     self.ngen = ngen
     self.crossoverPb = crossoverPb
     self.mutationPb = mutationPb
+    self.hof = hof
     self.pop = pop
       
   def Run(self):
     if not self.pop:
       self.pop = self.toolbox.population(n=self.popSize)
-    hof = []
     fitnesses = list(map(self.toolbox.evaluate, self.pop))
 
     for ind, fit in zip(self.pop, fitnesses):
@@ -43,11 +43,8 @@ class Runner:
       for ind, fit in zip(invalid_ind, fitnesses):
         ind.fitness.values = (fit,)
         
-      hof.extend(offspring)
-      hof.sort(key=lambda ind: ind.fitness.values)
-      hof = hof[:self.popSize]
-
+      self.hof.update(offspring)
       self.pop[:] = offspring
-      print('best score', self.toolbox.evaluate(hof[0]))
+      print('best score', self.toolbox.evaluate(self.hof[0]))
 
-    return self.pop, hof
+    return self.pop, self.hof
